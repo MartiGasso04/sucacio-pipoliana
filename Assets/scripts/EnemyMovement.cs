@@ -29,10 +29,11 @@ public class EnemyMovement : MonoBehaviour
     {
         // Restar el daño a la salud del enemigo
         health -= damage;
-
+        
         // Si la salud llega a 0, destruir el enemigo
         if (health <= 0)
         {
+            
             Destroy(gameObject);
         }
     }

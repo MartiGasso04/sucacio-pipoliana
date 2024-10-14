@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class EnemyProjectile : MonoBehaviour
 {
-    public int damage = 20; // Daño que inflige la bala
+    public int damage = 20;
+    
+   
 
     private void Start()
     {
         // Destruye la bala después de 2 segundos si no ha colisionado
-        Destroy(gameObject, 2f);
+        Destroy(gameObject, 4f); 
     }
 
     void OnTriggerEnter(Collider other)
@@ -26,7 +28,8 @@ public class EnemyProjectile : MonoBehaviour
                 // Verificar si el enemigo tiene el componente y aplicar daño
                 if (player != null)
                 {
-                    player.TakeDamage(damage); // Solo pasamos el daño
+                    player.TakeDamage(damage);
+                    Destroy(gameObject);// Solo pasamos el daño
                 }
             }
 

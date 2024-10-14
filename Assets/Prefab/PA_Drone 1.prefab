@@ -71,10 +71,10 @@ PrefabInstance:
       addedObject: {fileID: 479697276023720370}
     - targetCorrespondingSourceObject: {fileID: 100002, guid: f14b6f7503476eb4e9b2afc1cc05e719, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 94824460479100814}
+      addedObject: {fileID: 5623225363687161826}
     - targetCorrespondingSourceObject: {fileID: 100002, guid: f14b6f7503476eb4e9b2afc1cc05e719, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5623225363687161826}
+      addedObject: {fileID: 3905224971121723327}
   m_SourcePrefab: {fileID: 100100000, guid: f14b6f7503476eb4e9b2afc1cc05e719, type: 3}
 --- !u!1 &2740155915714002756 stripped
 GameObject:
@@ -144,20 +144,6 @@ MonoBehaviour:
   speed: 2
   distance: 5
   health: 50
---- !u!114 &94824460479100814
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2740155915714002756}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f76d8bbd2103fc4e876b891cdabc71a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damage: 20
-  puntDisparEnemic: {fileID: 0}
 --- !u!135 &5623225363687161826
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -175,7 +161,25 @@ SphereCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Radius: 5.13
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3905224971121723327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2740155915714002756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6eb6a4fb9ea4ca4ea8345a2b091e8f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  puntDisparEnemic: {fileID: 0}
+  projectil: {fileID: 919132149155446097, guid: 5ecef1b85cb87664d942d21c45916f85, type: 3}
+  puntDisparloc: {fileID: 0}
+  projectilSpeed: 5
+  fireRate: 1.5
+  shootDurationAfterExit: 3
