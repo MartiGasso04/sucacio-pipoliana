@@ -10590,10 +10590,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3905224971121723327, guid: 6a9f08c81f2bf354fb28b6884de9d321, type: 3}
-      propertyPath: projectil
-      value: 
-      objectReference: {fileID: 6501372094934709790, guid: e1f60f1767584ec48a593aa92622dcd1, type: 3}
-    - target: {fileID: 3905224971121723327, guid: 6a9f08c81f2bf354fb28b6884de9d321, type: 3}
       propertyPath: puntDisparloc
       value: 
       objectReference: {fileID: 1503235305}
