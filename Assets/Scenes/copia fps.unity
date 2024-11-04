@@ -4001,6 +4001,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2658856207876656693, guid: c20daf91d2bce304c85fec03f5fafd3b, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: d7e07b8bd11911f4fac0888f8061d33a, type: 3}
     - target: {fileID: 3150575073740128562, guid: c20daf91d2bce304c85fec03f5fafd3b, type: 3}
       propertyPath: m_Mass
       value: 0.0000001
@@ -4638,16 +4642,44 @@ PrefabInstance:
       propertyPath: playerTransform
       value: 
       objectReference: {fileID: 1770485653}
+    - target: {fileID: 4751429724680878277, guid: 41236ddb97b001d499cadd3503c086dc, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 820e3c535dff8054c87d6a262f58b86a, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 199669651405181594, guid: 41236ddb97b001d499cadd3503c086dc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 928160227}
   m_SourcePrefab: {fileID: 100100000, guid: 41236ddb97b001d499cadd3503c086dc, type: 3}
 --- !u!4 &928160221 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 688644825341151264, guid: 41236ddb97b001d499cadd3503c086dc, type: 3}
   m_PrefabInstance: {fileID: 928160220}
   m_PrefabAsset: {fileID: 0}
+--- !u!95 &928160227
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 245929417}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 95e57687cfe90fd46abf7ffa50834e2c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &945212971
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9067,6 +9099,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ak47: {fileID: 1594286368}
   revolver: {fileID: 245929417}
+  holsterOffset: {x: -0.5, y: -0.5, z: 0}
+  holsterRotation: {x: 0, y: 0, z: 90}
+  switchSpeed: 5
 --- !u!4 &1620481739
 Transform:
   m_ObjectHideFlags: 0
