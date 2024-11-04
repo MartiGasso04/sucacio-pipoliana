@@ -4,5 +4,11 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/copia fps.unity
+    guid: 6298393bb4443c34b98e0f0320b1bdba
+  - enabled: 1
+    path: Assets/Scenes/Game foked.unity
+    guid: 07926d0d08941ed49bafd571dd1ee81d
   m_configObjects: {}

@@ -178,7 +178,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   puntDisparEnemic: {fileID: 0}
-  projectil: {fileID: 919132149155446097, guid: 5ecef1b85cb87664d942d21c45916f85, type: 3}
+  projectil: {fileID: 6521703025501948656, guid: 238497bb77532d147a7810d55b219fe7, type: 3}
   puntDisparloc: {fileID: 0}
   projectilSpeed: 5
   fireRate: 1.5
