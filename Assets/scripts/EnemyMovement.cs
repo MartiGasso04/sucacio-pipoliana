@@ -7,15 +7,15 @@ public class EnemyMovement : MonoBehaviour
     public float speed = 2f; // Velocidad del movimiento
     public int health = 50; // Salud del enemigo
     public Transform[] waypoints; // Array de waypoints
-    private int currentWaypointIndex = 0; // Índice del waypoint actual
-    private bool reachedInitialPosition = false; // Estado para saber si llegó a la posición inicial
+    private int currentWaypointIndex = 0; // ï¿½ndice del waypoint actual
+    private bool reachedInitialPosition = false; // Estado para saber si llegï¿½ a la posiciï¿½n inicial
     private int comptadorEnemicsMorts;
 
     private Vector3 startPosition;
 
     void Start()
     {
-        // Guardar la posición inicial del enemigo
+        // Guardar la posiciï¿½n inicial del enemigo
         startPosition = transform.position;
     }
 
@@ -26,10 +26,10 @@ public class EnemyMovement : MonoBehaviour
 
         if (!reachedInitialPosition)
         {
-            // Moverse hacia el primer waypoint desde la posición inicial
+            // Moverse hacia el primer waypoint desde la posiciï¿½n inicial
             MoveTowards(startPosition);
 
-            // Si ya está cerca de la posición inicial, cambiar el estado para moverse a los waypoints
+            // Si ya estï¿½ cerca de la posiciï¿½n inicial, cambiar el estado para moverse a los waypoints
             if (Vector3.Distance(transform.position, startPosition) < 0.1f)
             {
                 reachedInitialPosition = true;
@@ -44,13 +44,13 @@ public class EnemyMovement : MonoBehaviour
             // Rotar el dron hacia el waypoint actual
             RotateTowards(targetWaypoint.position);
 
-            // Verificar si llegó al waypoint actual
+            // Verificar si llegï¿½ al waypoint actual
             if (Vector3.Distance(transform.position, targetWaypoint.position) < 0.1f)
             {
                 // Avanzar al siguiente waypoint
                 currentWaypointIndex++;
 
-                // Si ya pasamos el último waypoint, volver al primero
+                // Si ya pasamos el ï¿½ltimo waypoint, volver al primero
                 if (currentWaypointIndex >= waypoints.Length)
                 {
                     currentWaypointIndex = 0;
@@ -59,14 +59,14 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
-    // Método para mover el enemigo hacia un destino
+    // Mï¿½todo para mover el enemigo hacia un destino
     private void MoveTowards(Vector3 destination)
     {
         Vector3 direction = (destination - transform.position).normalized;
         transform.position += direction * speed * Time.deltaTime;
     }
 
-    // Método para rotar el enemigo hacia un destino
+    // Mï¿½todo para rotar el enemigo hacia un destino
     private void RotateTowards(Vector3 targetPosition)
     {
         Vector3 direction = (targetPosition - transform.position).normalized;
@@ -74,21 +74,17 @@ public class EnemyMovement : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * speed);
     }
 
-    // Método para recibir daño
+    // Mï¿½todo para recibir daï¿½o
     public void TakeDamage(int damage)
     {
-        // Restar el daño a la salud del enemigo
+        // Restar el daï¿½o a la salud del enemigo
         health -= damage;
 
         // Si la salud llega a 0, destruir el enemigo
         if (health <= 0)
         {
-            comptadorEnemicsMorts++;
-            if (comptadorEnemicsMorts == 2)
-            {
-                Key.instance.gameObject.SetActive(true);
-                Destroy(gameObject);
-            }
+            Key.instance.comptadorEnemicsMorts++;
+            Destroy(gameObject);           
         }
     }
 }

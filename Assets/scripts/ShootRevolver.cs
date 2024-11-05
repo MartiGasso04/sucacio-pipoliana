@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ShootRevolver : MonoBehaviour
 {
-    public Camera playerCamera; // Cámara del jugador
+    public Camera playerCamera; // CÃ¡mara del jugador
     public GameObject puntDispar; // Punto desde donde se dispara
     public GameObject bulletPrefab; // Prefab de la bala
     public AudioSource audioSource; // AudioSource para el sonido de disparo
@@ -13,12 +13,18 @@ public class ShootRevolver : MonoBehaviour
     public float fireRate = 1.0f; // Tiempo de espera entre disparos en segundos
     private float nextFireTime = 0f; // Tiempo en el que se puede volver a disparar
 
+    public float recoilAmount = 0.1f; // Cantidad de retroceso
+    public float recoilSpeed = 0.1f; // Velocidad del retroceso
+
+    private Coroutine recoilCoroutine;
+    private Vector3 originalPosition;
+
     void Start()
     {
         // Inicializa el componente de AudioSource
         audioSource = GetComponent<AudioSource>();
 
-        // Si no se ha asignado una cámara en el inspector, usar la cámara principal
+        // Si no se ha asignado una cÃ¡mara en el inspector, usar la cÃ¡mara principal
         if (playerCamera == null)
         {
             playerCamera = Camera.main;
@@ -29,14 +35,17 @@ public class ShootRevolver : MonoBehaviour
         {
             playerTransform = this.transform;
         }
+
+        // Guardar la posiciÃ³n original del arma
+        originalPosition = playerTransform.localPosition;
     }
 
     void Update()
     {
-        // Asegurar que el punto de disparo siga la posición del jugador
+        // Asegurar que el punto de disparo siga la posiciÃ³n del jugador
         puntDispar.transform.position = playerTransform.position;
 
-        // Detecta un clic izquierdo del ratón y verifica si puede disparar según el delay
+        // Detecta un clic izquierdo del ratÃ³n y verifica si puede disparar segÃºn el delay
         if (Input.GetMouseButtonDown(0) && Time.time >= nextFireTime)
         {
             ShootRaycast();
@@ -55,18 +64,47 @@ public class ShootRevolver : MonoBehaviour
         // Instanciar la bala en el punto de disparo
         GameObject bullet = Instantiate(bulletPrefab, puntDispar.transform.position, puntDispar.transform.rotation);
 
-        // Ajustar la rotación de la bala para que el eje X sea fijo a 90 grados
+        // Ajustar la rotaciÃ³n de la bala para que el eje X sea fijo a 90 grados
         Quaternion bulletRotation = bullet.transform.rotation;
         bullet.transform.rotation = Quaternion.Euler(90, bulletRotation.eulerAngles.y, bulletRotation.eulerAngles.z);
 
-        // Añadir un Rigidbody a la bala para que se mueva
+        // AÃ±adir un Rigidbody a la bala para que se mueva
         Rigidbody rb = bullet.AddComponent<Rigidbody>();
         rb.useGravity = false; // Desactivar la gravedad
 
-        // Asegúrate de que la bala se mueva en la dirección correcta
+        // AsegÃºrate de que la bala se mueva en la direcciÃ³n correcta
         rb.velocity = puntDispar.transform.forward * bulletSpeed; // Mover la bala hacia adelante
 
-        // Adjuntar el script de colisión
-        bullet.AddComponent<Bala>(); // Aquí se añade el script Bala
+        // Iniciar la animaciÃ³n de retroceso
+        if (recoilCoroutine != null)
+        {
+            StopCoroutine(recoilCoroutine);
+        }
+        recoilCoroutine = StartCoroutine(RecoilAnimation());
+    }
+
+    IEnumerator RecoilAnimation()
+    {
+        Vector3 recoilPosition = originalPosition - playerTransform.forward * recoilAmount + playerTransform.up * (recoilAmount / 2);
+
+        float elapsedTime = 0f;
+
+        while (elapsedTime < recoilSpeed)
+        {
+            playerTransform.localPosition = Vector3.Lerp(originalPosition, recoilPosition, elapsedTime / recoilSpeed);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        elapsedTime = 0f;
+
+        while (elapsedTime < recoilSpeed)
+        {
+            playerTransform.localPosition = Vector3.Lerp(recoilPosition, originalPosition, elapsedTime / recoilSpeed);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        playerTransform.localPosition = originalPosition;
     }
 }

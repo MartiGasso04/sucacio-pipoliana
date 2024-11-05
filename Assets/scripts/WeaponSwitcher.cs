@@ -20,6 +20,8 @@ public class WeaponSwitcher : MonoBehaviour
     public Vector3 holsterRotation = new Vector3(0, 0, 90);
     public float switchSpeed = 3f; // Ajusta esta velocidad para mejorar la suavidad
 
+    public AudioSource soCanvi;
+
     void Start()
     {
         // Guardar las posiciones y rotaciones originales para "listo para disparar"
@@ -48,6 +50,8 @@ public class WeaponSwitcher : MonoBehaviour
     IEnumerator SwitchWeaponWithAnimation(int weaponIndex)
     {
         isSwitching = true;
+
+        soCanvi.Play();
 
         GameObject weaponToDraw = weaponIndex == 0 ? ak47 : revolver;
         GameObject weaponToHolster = weaponIndex == 0 ? revolver : ak47;
