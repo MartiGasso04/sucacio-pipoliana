@@ -77,10 +77,8 @@ public class EnemyMovement : MonoBehaviour
     // M�todo para recibir da�o
     public void TakeDamage(int damage)
     {
-        // Restar el da�o a la salud del enemigo
         health -= damage;
 
-        // Si la salud llega a 0, destruir el enemigo
         if (health <= 0)
         {
             Key.instance.comptadorEnemicsMorts++;

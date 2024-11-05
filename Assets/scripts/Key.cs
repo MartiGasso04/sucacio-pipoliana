@@ -13,6 +13,12 @@ public class Key : MonoBehaviour
     public int comptadorEnemicsMorts = 0;
     private bool pitxarF = false;  // Para detectar si el jugador ha presionado "F"
     private bool playerInRange = false;  // Para saber si el jugador está en el trigger
+    private bool keyActivated = false;  // Para saber si la llave ya ha sido activada
+
+    public AudioSource keySpawnSound;
+
+
+    private MeshRenderer meshRenderer;
 
     void Awake()
     {
@@ -21,8 +27,11 @@ public class Key : MonoBehaviour
             instance = this;
         }
         
-        // Inicialmente desactiva el objeto y los elementos de UI
-        gameObject.SetActive(false);
+        // Inicializa el MeshRenderer
+        meshRenderer = GetComponent<MeshRenderer>();
+
+        // Inicialmente desactiva el mesh y los elementos de UI
+        meshRenderer.enabled = false;
         bafarada.SetActive(false);
         pressFText.gameObject.SetActive(false);
         keySpawnText.gameObject.SetActive(false);
@@ -31,12 +40,14 @@ public class Key : MonoBehaviour
     void Update()
     {
         // Activa el objeto cuando el contador de enemigos muertos llega a 2
-        if (comptadorEnemicsMorts == 2)
+        if (comptadorEnemicsMorts == 2 && !keyActivated)
         {
-            gameObject.SetActive(true);
+            keyActivated = true;
+            meshRenderer.enabled = true;
+            keySpawnSound.Play();
             bafarada.SetActive(true);
             keySpawnText.gameObject.SetActive(true);
-
+            StartCoroutine(Sucatione());
         }
 
         // Comprueba si el jugador está en el área y ha presionado "F"
@@ -52,6 +63,17 @@ public class Key : MonoBehaviour
             pressFText.gameObject.SetActive(false);
             Destroy(gameObject);   
         }
+    }
+
+    private IEnumerator Sucatione()
+    {
+        // Espera 2 segundos
+        yield return new WaitForSeconds(2f);
+
+        // Desactiva `bafarada` y `keySpawnText` después de 2 segundos
+        bafarada.SetActive(false);
+        keySpawnText.gameObject.SetActive(false);
+        meshRenderer.enabled = false;
     }
 
     void OnTriggerEnter(Collider other)
