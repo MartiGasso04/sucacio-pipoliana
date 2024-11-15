@@ -46,7 +46,7 @@ public class Shoot : MonoBehaviour
         puntDispar.transform.position = playerTransform.position;
 
         // Detecta el clic izquierdo del ratón y verifica si puede disparar según el delay
-        if (Input.GetMouseButton(0) && Time.time >= nextFireTime)
+        if (Input.GetMouseButton(0) && Time.time >= nextFireTime && AmmoReload.instance.comptadorBalesAK > 0)
         {
             ShootRaycast();
             nextFireTime = Time.time + fireRate; // Establece el tiempo para el siguiente disparo
@@ -90,6 +90,9 @@ public class Shoot : MonoBehaviour
             StopCoroutine(recoilCoroutine);
         }
         recoilCoroutine = StartCoroutine(RecoilAnimation());
+
+        AmmoReload.instance.comptadorBalesAK--;
+        AmmoReload.instance.municioTextAK.text = AmmoReload.instance.comptadorBalesAK + "/" + AmmoReload.instance.maxBalesAK;
     }
 
     IEnumerator RecoilAnimation()

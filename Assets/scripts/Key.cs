@@ -17,7 +17,6 @@ public class Key : MonoBehaviour
 
     public AudioSource keySpawnSound;
 
-
     private MeshRenderer meshRenderer;
 
     void Awake()
@@ -26,15 +25,12 @@ public class Key : MonoBehaviour
         {
             instance = this;
         }
-        
-        // Inicializa el MeshRenderer
-        meshRenderer = GetComponent<MeshRenderer>();
 
-        // Inicialmente desactiva el mesh y los elementos de UI
-        meshRenderer.enabled = false;
         bafarada.SetActive(false);
         pressFText.gameObject.SetActive(false);
         keySpawnText.gameObject.SetActive(false);
+        meshRenderer = GetComponent<MeshRenderer>();
+        meshRenderer.enabled = false; // Desactivar solo el renderizador de malla
     }
 
     void Update()
@@ -43,10 +39,10 @@ public class Key : MonoBehaviour
         if (comptadorEnemicsMorts == 2 && !keyActivated)
         {
             keyActivated = true;
-            meshRenderer.enabled = true;
             keySpawnSound.Play();
             bafarada.SetActive(true);
             keySpawnText.gameObject.SetActive(true);
+            meshRenderer.enabled = true;
             StartCoroutine(Sucatione());
         }
 
@@ -73,7 +69,6 @@ public class Key : MonoBehaviour
         // Desactiva `bafarada` y `keySpawnText` después de 2 segundos
         bafarada.SetActive(false);
         keySpawnText.gameObject.SetActive(false);
-        meshRenderer.enabled = false;
     }
 
     void OnTriggerEnter(Collider other)

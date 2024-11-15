@@ -46,7 +46,7 @@ public class ShootRevolver : MonoBehaviour
         puntDispar.transform.position = playerTransform.position;
 
         // Detecta un clic izquierdo del ratón y verifica si puede disparar según el delay
-        if (Input.GetMouseButtonDown(0) && Time.time >= nextFireTime)
+        if (Input.GetMouseButtonDown(0) && Time.time >= nextFireTime && AmmoReloadRevolver.instance.comptadorBalesRevolver > 0)
         {
             ShootRaycast();
             nextFireTime = Time.time + fireRate; // Establece el tiempo para el siguiente disparo
@@ -81,6 +81,9 @@ public class ShootRevolver : MonoBehaviour
             StopCoroutine(recoilCoroutine);
         }
         recoilCoroutine = StartCoroutine(RecoilAnimation());
+
+        AmmoReloadRevolver.instance.comptadorBalesRevolver--;
+        AmmoReloadRevolver.instance.municioTextRevolver.text = AmmoReloadRevolver.instance.comptadorBalesRevolver + "/" + AmmoReloadRevolver.instance.maxBalesRevolver;
     }
 
     IEnumerator RecoilAnimation()

@@ -6,7 +6,8 @@ public class WeaponSwitcher : MonoBehaviour
     public GameObject ak47;     // Prefab o GameObject del AK-47
     public GameObject revolver; // Prefab o GameObject del revólver
 
-    private int currentWeaponIndex = 0; // 0 = AK-47, 1 = Revolver
+    public static WeaponSwitcher instance;
+    public int currentWeaponIndex = 0; // 0 = AK-47, 1 = Revolver
     private bool isSwitching = false; // Estado de cambio de arma
 
     // Posiciones y rotaciones de "listo para disparar" guardadas al inicio
@@ -24,6 +25,8 @@ public class WeaponSwitcher : MonoBehaviour
 
     void Start()
     {
+
+        instance = this;
         // Guardar las posiciones y rotaciones originales para "listo para disparar"
         ak47ReadyPosition = ak47.transform.localPosition;
         ak47ReadyRotation = ak47.transform.localEulerAngles;
@@ -35,6 +38,8 @@ public class WeaponSwitcher : MonoBehaviour
         revolver.transform.localEulerAngles = holsterRotation;
         ak47.SetActive(true);
         revolver.SetActive(false);
+
+        AmmoReloadRevolver.instance.municioTextRevolver.enabled = false;
     }
 
     void Update()
@@ -44,6 +49,14 @@ public class WeaponSwitcher : MonoBehaviour
         {
             currentWeaponIndex = 1 - currentWeaponIndex; // Cambia entre 0 y 1
             StartCoroutine(SwitchWeaponWithAnimation(currentWeaponIndex));
+
+            if(currentWeaponIndex == 1) {
+                AmmoReload.instance.municioTextAK.enabled = false;
+                AmmoReloadRevolver.instance.municioTextRevolver.enabled = true;
+            } else {
+                AmmoReload.instance.municioTextAK.enabled = true;
+                AmmoReloadRevolver.instance.municioTextRevolver.enabled = false;
+            }
         }
     }
 
@@ -71,6 +84,7 @@ public class WeaponSwitcher : MonoBehaviour
         // Desenfundar la nueva arma (mover a posición "ready")
         yield return StartCoroutine(MoveWeapon(weaponToDraw, drawPosition, drawRotation, switchSpeed));
 
+        
         isSwitching = false;
     }
 

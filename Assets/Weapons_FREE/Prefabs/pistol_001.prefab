@@ -128,6 +128,8 @@ MonoBehaviour:
   bulletSpeed: 15
   playerTransform: {fileID: 0}
   fireRate: 1
+  recoilAmount: 0.1
+  recoilSpeed: 0.1
 --- !u!82 &4751429724680878277
 AudioSource:
   m_ObjectHideFlags: 0

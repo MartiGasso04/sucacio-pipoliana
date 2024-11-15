@@ -9,7 +9,7 @@ public class EnemyMovement : MonoBehaviour
     public Transform[] waypoints; // Array de waypoints
     private int currentWaypointIndex = 0; // �ndice del waypoint actual
     private bool reachedInitialPosition = false; // Estado para saber si lleg� a la posici�n inicial
-    private int comptadorEnemicsMorts;
+    private int comptadorEnemicsMorts = 0;
 
     private Vector3 startPosition;
 
@@ -76,13 +76,17 @@ public class EnemyMovement : MonoBehaviour
 
     // M�todo para recibir da�o
     public void TakeDamage(int damage)
-    {
-        health -= damage;
+{
+    health -= damage;
 
-        if (health <= 0)
+    if (health <= 0)
+    {
+        if (Key.instance != null)
         {
             Key.instance.comptadorEnemicsMorts++;
-            Destroy(gameObject);           
+            Debug.Log("Enemigos muertos: " + Key.instance.comptadorEnemicsMorts);
         }
+        Destroy(gameObject);           
     }
+}
 }
