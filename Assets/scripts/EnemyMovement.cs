@@ -4,12 +4,11 @@ using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
 {
-    public float speed = 2f; // Velocidad del movimiento
-    public int health = 50; // Salud del enemigo
-    public Transform[] waypoints; // Array de waypoints
-    private int currentWaypointIndex = 0; // �ndice del waypoint actual
-    private bool reachedInitialPosition = false; // Estado para saber si lleg� a la posici�n inicial
-    private int comptadorEnemicsMorts = 0;
+    public float speed = 2f;
+    public int health = 50;
+    public Transform[] waypoints;
+    private int currentWaypointIndex = 0;
+    private bool reachedInitialPosition = false;
 
     private Vector3 startPosition;
 
@@ -50,7 +49,6 @@ public class EnemyMovement : MonoBehaviour
                 // Avanzar al siguiente waypoint
                 currentWaypointIndex++;
 
-                // Si ya pasamos el �ltimo waypoint, volver al primero
                 if (currentWaypointIndex >= waypoints.Length)
                 {
                     currentWaypointIndex = 0;
@@ -76,17 +74,29 @@ public class EnemyMovement : MonoBehaviour
 
     // M�todo para recibir da�o
     public void TakeDamage(int damage)
-{
-    health -= damage;
-
-    if (health <= 0)
     {
-        if (Key.instance != null)
+        health -= damage;
+
+        if (health <= 0)
         {
-            Key.instance.comptadorEnemicsMorts++;
-            Debug.Log("Enemigos muertos: " + Key.instance.comptadorEnemicsMorts);
+            if (Key.instance != null)
+            {
+                Key.instance.comptadorEnemicsMorts++;
+            }
+            Destroy(gameObject);           
         }
-        Destroy(gameObject);           
     }
-}
+
+    private void OnTriggerEnter(Collider other)
+    {
+        // Verificar si el objeto con el que colisionó tiene el tag "BALA"
+        if (other.CompareTag("BALA"))
+        {
+            if(WeaponSwitcher.instance.currentWeaponIndex == 0) {
+                TakeDamage(20);
+                Debug.Log("Vida dron: " + health);
+            } 
+            else if(WeaponSwitcher.instance.currentWeaponIndex == 1) TakeDamage(30);
+        }
+    }
 }
