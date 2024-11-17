@@ -13,7 +13,7 @@ public class Bala : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         // Verificar si el objeto con el que chocó NO tiene el tag "BALA"
-        if (other.gameObject.tag != "BALA")
+        if (other.gameObject.tag != "BALA"&& other.gameObject.tag != "door1")
         {
             // Destruir la bala
             Destroy(gameObject);

@@ -9,12 +9,13 @@ public class EnemyMovement : MonoBehaviour
     public Transform[] waypoints;
     private int currentWaypointIndex = 0;
     private bool reachedInitialPosition = false;
+    private bool isMoving = true; // Indica si el enemigo está en movimiento
 
     private Vector3 startPosition;
 
     void Start()
     {
-        // Guardar la posici�n inicial del enemigo
+        // Guardar la posición inicial del enemigo
         startPosition = transform.position;
     }
 
@@ -25,16 +26,16 @@ public class EnemyMovement : MonoBehaviour
 
         if (!reachedInitialPosition)
         {
-            // Moverse hacia el primer waypoint desde la posici�n inicial
+            // Moverse hacia el primer waypoint desde la posición inicial
             MoveTowards(startPosition);
 
-            // Si ya est� cerca de la posici�n inicial, cambiar el estado para moverse a los waypoints
+            // Si ya está cerca de la posición inicial, cambiar el estado para moverse a los waypoints
             if (Vector3.Distance(transform.position, startPosition) < 0.1f)
             {
                 reachedInitialPosition = true;
             }
         }
-        else
+        else if (isMoving)
         {
             // Moverse hacia el waypoint actual
             Transform targetWaypoint = waypoints[currentWaypointIndex];
@@ -43,7 +44,7 @@ public class EnemyMovement : MonoBehaviour
             // Rotar el dron hacia el waypoint actual
             RotateTowards(targetWaypoint.position);
 
-            // Verificar si lleg� al waypoint actual
+            // Verificar si llegó al waypoint actual
             if (Vector3.Distance(transform.position, targetWaypoint.position) < 0.1f)
             {
                 // Avanzar al siguiente waypoint
@@ -57,14 +58,14 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
-    // M�todo para mover el enemigo hacia un destino
+    // Método para mover el enemigo hacia un destino
     private void MoveTowards(Vector3 destination)
     {
         Vector3 direction = (destination - transform.position).normalized;
         transform.position += direction * speed * Time.deltaTime;
     }
 
-    // M�todo para rotar el enemigo hacia un destino
+    // Método para rotar el enemigo hacia un destino
     private void RotateTowards(Vector3 targetPosition)
     {
         Vector3 direction = (targetPosition - transform.position).normalized;
@@ -72,7 +73,19 @@ public class EnemyMovement : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * speed);
     }
 
-    // M�todo para recibir da�o
+    // Método para detener el movimiento del enemigo
+    public void StopMoving()
+    {
+        isMoving = false;
+    }
+
+    // Método para iniciar el movimiento del enemigo
+    public void StartMoving()
+    {
+        isMoving = true;
+    }
+
+    // Método para recibir daño
     public void TakeDamage(int damage)
     {
         health -= damage;

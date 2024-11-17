@@ -4,17 +4,23 @@ using UnityEngine;
 
 public class EnemyShoot : MonoBehaviour
 {
-    public GameObject puntDisparEnemic; // Punto desde donde dispara el enemigo
+    public float fireRate = 1f; // Tasa de disparo
+    public float shootDurationAfterExit = 10f; // Duración de disparo después de que el jugador salga del trigger
     public GameObject projectil; // Prefab del proyectil
-    public Transform puntDisparloc; // Posici�n del punto de disparo
-    public float projectilSpeed = 5f; // Velocidad del proyectil
-    public float fireRate = 1.5f; // Frecuencia de disparo en segundos
-    public float shootDurationAfterExit = 3f; // Tiempo que seguir� disparando despu�s de que el jugador salga del collider
+    public Transform puntDisparEnemic; // Punto de disparo del enemigo
+    public float projectilSpeed = 6f; // Velocidad del proyectil
 
     private float nextFireTime = 0f; // Tiempo para el siguiente disparo
     private Transform player; // Referencia al jugador
-    private bool isShooting = false; // Indica si el enemigo est� disparando
-    private float shootEndTime = 0f; // Tiempo en el que dejar� de disparar despu�s de que el jugador salga
+    private bool isShooting = false; // Indica si el enemigo está disparando
+    private float shootEndTime = 0f; // Tiempo en el que dejará de disparar después de que el jugador salga
+    private EnemyMovement enemyMovement; // Referencia al componente de movimiento del enemigo (si existe)
+
+    void Start()
+    {
+        // Obtener el componente de movimiento del enemigo (si existe)
+        enemyMovement = GetComponent<EnemyMovement>();
+    }
 
     void OnTriggerEnter(Collider other)
     {
@@ -29,11 +35,11 @@ public class EnemyShoot : MonoBehaviour
 
     void OnTriggerStay(Collider other)
     {
-        // Si el jugador est� en el rango y es tiempo de disparar
+        // Si el jugador está en el rango y es tiempo de disparar
         if (player != null && Time.time > nextFireTime && isShooting)
         {
             ShootAtPlayer();
-            nextFireTime = Time.time + fireRate; // Actualizar el tiempo del pr�ximo disparo
+            nextFireTime = Time.time + fireRate; // Actualizar el tiempo del próximo disparo
         }
     }
 
@@ -43,6 +49,27 @@ public class EnemyShoot : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             shootEndTime = Time.time + shootDurationAfterExit; // Definir el tiempo en que debe dejar de disparar
+            player = null; // El jugador ya no está en el rango
+        }
+    }
+
+    void Update()
+    {
+        // Si el tiempo actual es mayor que shootEndTime y el jugador no está en el rango, dejar de disparar y volver a moverse
+        if (isShooting && Time.time > shootEndTime && player == null)
+        {
+            isShooting = false;
+            if (enemyMovement != null)
+            {
+                enemyMovement.StartMoving(); // Volver a moverse
+            }
+        }
+
+        // Si el jugador está en el rango y es tiempo de disparar
+        if (player != null && Time.time > nextFireTime && isShooting)
+        {
+            ShootAtPlayer();
+            nextFireTime = Time.time + fireRate; // Actualizar el tiempo del próximo disparo
         }
     }
 
@@ -50,40 +77,33 @@ public class EnemyShoot : MonoBehaviour
     {
         if (player != null)
         {
-            // Obtener la direcci�n hacia el jugador
-            Vector3 directionToPlayer = (player.position - puntDisparEnemic.transform.position).normalized;
+            // Detener el movimiento del enemigo
+            if (enemyMovement != null)
+            {
+                enemyMovement.StopMoving();
+            }
+
+            // Girar el enemigo hacia el jugador
+            Vector3 directionToPlayer = (player.position - transform.position).normalized;
+            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(directionToPlayer.x, 0, directionToPlayer.z));
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
+
+            // Obtener la dirección hacia el jugador desde el punto de disparo
+            Vector3 directionToPlayerFromShootPoint = (player.position - puntDisparEnemic.position).normalized;
 
             // Instanciar el proyectil en el punto de disparo
-            GameObject firedProjectil = Instantiate(projectil, puntDisparEnemic.transform.position, Quaternion.identity);
+            GameObject firedProjectil = Instantiate(projectil, puntDisparEnemic.position, Quaternion.identity);
 
-            // A�adir un Rigidbody al proyectil
-            Rigidbody rb = firedProjectil.AddComponent<Rigidbody>();
+            // Añadir un Rigidbody al proyectil
+            Rigidbody rb = firedProjectil.GetComponent<Rigidbody>();
+            if (rb == null)
+            {
+                rb = firedProjectil.AddComponent<Rigidbody>();
+            }
             rb.useGravity = false; // Desactivar la gravedad
 
-            // Aplicar velocidad al proyectil en la direcci�n del jugador
-            rb.velocity = directionToPlayer * projectilSpeed;
-        }
-    }
-
-    void Update()
-    {
-        // Mantener el punto de disparo del enemigo en la posici�n correcta
-        if (puntDisparEnemic != null && puntDisparloc != null)
-        {
-            puntDisparEnemic.transform.position = puntDisparloc.position;
-        }
-
-        // Si el jugador ha salido, el enemigo sigue disparando hasta que pase el tiempo
-        if (player == null && Time.time >= shootEndTime)
-        {
-            isShooting = false; // Dejar de disparar cuando pase el tiempo
-        }
-
-        // Si el jugador ha salido del rango pero el tiempo de disparo no ha terminado, sigue disparando
-        if (isShooting && Time.time > nextFireTime)
-        {
-            ShootAtPlayer();
-            nextFireTime = Time.time + fireRate;
+            // Aplicar velocidad al proyectil en la dirección del jugador
+            rb.velocity = directionToPlayerFromShootPoint * projectilSpeed;
         }
     }
 }
