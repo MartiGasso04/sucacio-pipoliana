@@ -15,7 +15,7 @@ public class EnemyProjectile : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag != "BalaEnemiga" && other.gameObject.tag != "enemy")
+        if (other.gameObject.tag != "BalaEnemiga" && other.gameObject.tag != "enemy"&& other.gameObject.tag != "door1")
         {
             if (other.gameObject.tag == "Player")
             {
